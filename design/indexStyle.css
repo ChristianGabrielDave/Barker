@@ -1,0 +1,324 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;1,500&display=swap');
+*
+{
+    margin: 0;
+    padding: 0%;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 120vh;
+    background: url('../assets/loginBackgroundPlain.png') no-repeat center center fixed;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.container {
+    height: 550px;
+    width: 410px;
+    background: rgba(255, 249, 235, 0.8); 
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+    right: -300px;
+    top: -75px;
+    transition: height 0.3 ease;
+}
+
+.Form
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.loginForm
+{
+    position: absolute;
+    transform: translateX(0px);
+    transition: .5 ease;
+}
+
+.loginForm.active
+{
+    transform: translateX(-410px);
+}
+
+.registerForm
+{
+    transform: translateX(410px);
+    transition: .5s ease;
+}
+
+.registerForm.active
+{
+    transform: translateX(0);
+}
+
+h2
+{
+    color:  #402f25;
+    font-size: 32px;
+}
+
+.inputBox
+{
+    margin: 45px 0;
+    height: 40px;
+    width: 300px;
+    border-bottom: 2px solid rgba(168,147,120,255);
+    position: relative;
+}
+
+.inputBox input
+{
+    width: 90%;
+    height: 100%;
+    float: right;
+    border: none;
+    outline: none;
+    font-size: 15px;
+    color: rgba(168,147,120,255);
+    padding: 5px 0;
+    background: transparent;
+}
+
+.inputBox label
+{
+    position: absolute;
+    left: 0;
+    transform: translateY(-56%);
+    font-size: 15px;
+    font-weight: 500;
+    color:  #402f25;
+}
+
+.inputBox i
+{
+    position: absolute;
+    left: 0px;
+    transform: translateY(75%);
+    font-size: 22px;
+    color:  #402f25;
+}
+
+.eye
+{
+    position: absolute;
+    right: 32px;
+    font-size: 22px;
+    color: rgba(225,209,196,255);
+}
+
+input::placeholder
+{
+    font-size: 13px;
+    color: rgba(168,147,120,255);
+}
+
+input#checked
+{
+    margin-right: 3px;
+}
+
+.button
+{
+    width: 100%;
+    height: 40px;
+    border-radius: 50px;
+    border: none;
+    outline: none;
+    background: #402f25;
+    font-size: 19px;
+    font-weight: 500;
+    color: rgba(255,249,235,255);
+    position: relative;
+    cursor: pointer;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.bttn::before
+{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0%;
+    height: 100%;
+    width: 0%;
+    background: rgba(225,209,196,255);
+    transition: .5s ease;
+    z-index: -1;
+}
+
+.button:hover
+{
+    color: rgba(225,209,196,255);
+}
+
+.button:hover::before
+{
+    width: 100%;
+}
+
+p
+{
+    color:  #402f25;
+    font-size: 13px;
+    font-weight: 500;
+    margin: 25px 0;
+}
+
+.rgstrBttn a
+{
+    text-decoration: none;
+    font-size: 14px;
+    color:  #402f25;
+}
+
+.lgnBttn a
+{
+    text-decoration: none;
+    font-size: 14px;
+    color:  #402f25
+}
+
+@media(max-width: 768px)
+{
+    .container
+    {
+        height: 750px;
+        width: 380px;
+    }
+    h2
+    {
+        font-size: 26px;
+    }
+    .inputBox
+    {
+        margin: 34px 0;
+        height: 35px;
+        width: 300px;
+    }
+    .inputBox label
+    {
+        font-size: 13px;
+    }
+    .inputBox input
+    {
+        font-size: 13px;
+    }
+    .inputBox i
+    {
+        font-size: 18px;
+    }
+    input::placeholder
+    {
+        font-size: 13px;
+    }
+    input#checked
+    {
+        margin-right: 2px;
+        height: 15px;
+    }
+    .button
+    {
+        height: 35px;
+        font-size: 15px;
+    }
+    p
+    {
+        font-size: 11px;
+    }
+    .rgstrBttn a
+    {
+        text-decoration: none;
+        font-size: 13px;
+    }
+}
+
+@media(max-width: 480px)
+{
+    .container
+    {
+        height: 450px;
+        width: 310px;
+    }
+    h2
+    {
+        font-size: 22px;
+    }
+    .inputBox
+    {
+        margin: 20px 0;
+        height: 35px;
+        width: 220px;
+    }
+    .inputBox label
+    {
+        font-size: 12px;
+    }
+    .inputBox input
+    {
+        font-size: 12px;
+    }
+    .inputBox i
+    {
+        font-size: 16px;
+    }
+    input::placeholder
+    {
+        font-size: 16px;
+    }
+    input#checked
+    {
+        margin-right: 2px;
+        height: 10px;
+    }
+    .button
+    {
+        height: 25px;
+        font-size: 12px;
+    }
+    p
+    {
+        font-size: 11px;
+    }
+    .rgstrBttn a
+    {
+        text-decoration: none;
+        font-size: 11px;
+    }
+}
+
+@media(max-width:365px)
+{
+    .container
+    {
+        height: 420px;
+        width: 280px;
+    }
+    h2
+    {
+        font-size: 18px;
+    }
+    .inputBox
+    {
+        margin: 20px 0;
+        height: 35px;
+        width: 200px;
+    }
+    .rgstrBttn a
+    {
+        text-decoration: none;
+        font-size: 9px;
+    }
+}
