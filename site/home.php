@@ -1,86 +1,104 @@
-<?php 
+<?php
+session_start();
 include '../includes/config.php';
 
-$sql = "SELECT * FROM post ORDER BY created_at DESC";
-$result = $conn->query($sql);
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit();
+}
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="../design/homeStyle.css">
+        <script src="https://kit.fontawesome.com/2960bf0645.js" crossorigin="anonymous"></script>
     </head>
     <body>
-        <form action="post_handler.php" method="POST" enctype="multipart/form-data">
-            <div class="postBox">
-                <textarea name="content" placeholder="What's new?"></textarea>
-                <input type="file" name="media">
-                <button type="submit">Bark</button>
-            </div>
-        </form>
-        <div id="posts">
-        <?php while ($row = $result->fetch_assoc()) : ?>
-            <div class="post">
-                <p><?= htmlspecialchars($row['content']) ?></p>
-                
-                <?php if ($row['type'] == 'image') : ?>
-                    <img src="uploads/<?= $row['media'] ?>" width="200">
-                <?php elseif ($row['type'] == 'video') : ?>
-                    <video width="200" controls>
-                        <source src="uploads/<?= htmlspecialchars($row['media']) ?>" type="video/mp4">
-                    </video>
-                <?php endif; ?>
-
-                <p>Likes: <span id="likes-<?= $row['id'] ?>"><?= $row['likes'] ?></span></p>
-                <button onclick="likePost(<?= $row['id'] ?>)">Like</button>
-
-                <!-- Comment Form -->
-                <form action="comment_handler.php" method="POST">
-                    <input type="hidden" name="post_id" value="<?= $row['id'] ?>">
-                    <input type="text" name="comment" placeholder="Add a comment">
-                    <button type="submit">Comment</button>
-                </form>
-
-                <!-- Display Comments -->
-                <div class="comments">
-                    <h4>Comments</h4>
-                    <?php
-                    $post_id = $row['id'];
-                    $comment_sql = "SELECT * FROM comments WHERE post_id = $post_id ORDER BY created_at ASC";
-                    $comment_result = $conn->query($comment_sql);
-
-                    while ($comment = $comment_result->fetch_assoc()) :
-                    ?>
-                        <p><strong><?= htmlspecialchars($comment['comment']) ?></strong> <small>(<?= $comment['created_at'] ?>)</small></p>
-                    <?php endwhile; ?>
-                </div>
-
-                <a href="edit_handler.php?id=<?= $row['id'] ?>">Edit</a> | 
-                <a href="delete_handler.php?id=<?= $row['id'] ?>">Delete</a>
-            </div>
-        <?php endwhile; ?>
+        <div class="postBox">
+            <form action="../handlers/postHandler.php" method="POST" enctype="multipart/form-data">
+                <textarea name="text" id="text" wrap="hard" placeholder="What's new?" class="postText"></textarea>
+                <input type="hidden" name="user_id" id="user_id" value="<?php echo $_SESSION['user_id']; ?>">
+                <input type="file" name="postImage" accept=".jpg, .png, .jpeg" class="postImage">
+                <button type="submit" class="post-btn">Bark!</button>
+            </form>
         </div>
-        <script>
-            function likePost(postId, button) {
-            fetch("like_handler.php", {
-                method: "POST",
-                body: new URLSearchParams({ post_id: postId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    let likeSpan = document.getElementById("likes-" + postId);
-                    likeSpan.textContent = parseInt(likeSpan.textContent) + 1;
-                    button.disabled = true; // Disable button after liking
-                    button.textContent = "Liked";
+        <div class="postContainer">
+            <?php
+                $postsql = "SELECT `id`, `content`, `media`, `uid`, `dop` FROM `posts` ORDER BY `dop` DESC;";
+                $postresult = mysqli_query($conn, $postsql);
+
+                if (mysqli_num_rows($postresult) > 0) {
+                    while ($postrow = mysqli_fetch_assoc($postresult)) {
+                        $post_id = $postrow['id'];
+                        $user_id = $postrow['uid'];
+
+                        $usersql = "SELECT `username`, `dp` FROM `users` WHERE `id` = $user_id;";
+                        $userresult = mysqli_query($conn, $usersql);
+                        $userrow = mysqli_fetch_assoc($userresult);
+
+                        $likesql = "SELECT COUNT(*) as likes FROM `likes` WHERE `pid` = $post_id;";
+                        $likeresult = mysqli_query($conn, $likesql);
+                        $likerow = mysqli_fetch_assoc($likeresult);
+                        $likecount = $likerow['likes'];
+
+                        $commentsql = "SELECT COUNT(*) as comments FROM `comments` WHERE `pid` = $post_id;";
+                        $commentresult = mysqli_query($conn, $commentsql);
+                        $commentrow = mysqli_fetch_assoc($commentresult);
+                        $commentcount = $commentrow["comments"];
+
+                        echo '<div class="postDisplayBoxHead">
+                                <ul>
+                                    <li>
+                                        <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">
+                                        <img src="' . ($userrow['dp'] ? '../uploads/profile_pictures' . $userrow['dp'] : 'https://api.dicebear.com/6.x/initials/png?seed=' . $userrow['username'] . '&size=128') . '" 
+                                        alt="profile" class="account-profpic">
+                                        </a>
+                                    </li>
+                                    <li style="padding-left: 10px; padding-right: 10px;">
+                                        <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">' . $userrow['username'] . '</a>
+                                    </li>
+                                    <li style="vertical-align:baseline;">
+                                    <small>' . $postrow['dop'] . '</small>
+                                    </li>
+                                </ul>
+                                </div>';
+                        
+                        if ($user_id == $_SESSION['user_id']) {
+                            echo '<div class="more-options">
+                                    <button class="more-btn">⋮</button>
+                                        <div class="dropdown-content" style="display: none;">
+                                            <button class="edit-btn" onclick="editPost(' . $post_id . ')"><i class="fa-solid fa-pen"></i> Edit</button>
+                                            <button class="delete-btn" onclick="deletePost('. $post_id . ')"><i class="fa-solid fa-trash"></i> Delete</button>
+                                        </div>
+                                    </div>';
+                        }
+
+                        echo '<div class="postDisplayBoxMessage">
+                            ' . nl2br(htmlspecialchars($postrow['content'])) . '
+                                </div>';
+                
+                        if (!empty($postrow['media'])) {
+                            echo '<div class="postDisplayBoxImage">
+                                <a href="../uploads/' . $postrow['media'] . '" target="_blank">
+                                    <img src="../uploads/' . $postrow['media'] . '" alt="' . $postrow['media'] . '" style="width: 100%; object-fit: contain; margin-bottom: 20px; border-radius: 5px;">
+                                </a>
+                                </div>';
+                            }
+
+                        echo '<div class="feed-post-actions">
+                                <button class="like-btn" data-post-id="' . $post_id . '"><i class="fa-solid fa-heart"></i>(' . $likeCount . ')</button>
+                                <button class="comment-btn" data-post-id="' . $post_id . '"><i class="fa-solid fa-comment"></i>(' . $commentCount . ')</button>
+                                <button class="repost-btn" data-post-id="' . $post_id . '"><i class="fa-solid fa-share"></i>(' . $repostCount . ')</button>';
+
+                        echo '</div></div>';
+                    }
                 } else {
-                    alert(data.message); // Show alert if already liked
-                }
-            });
-        }
-        </script>
+                        echo '<p>No posts found</p>';
+                    }
+            ?>
+        </div>
+        <script src="../handlers/handlerScript.js"></script>
     </body>
 </html>
-

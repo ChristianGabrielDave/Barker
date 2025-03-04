@@ -3,7 +3,7 @@ session_start();
 include '../includes/config.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../index.php");
+    header("Location: ../login.php");
     exit();
 }
 ?>
@@ -13,8 +13,8 @@ if (!isset($_SESSION['user_id'])) {
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Home/Barker</title>
-        <link rel="shortcut icon" type="assets/x-icon" href="../images/logo.png">
+        <title>Barker</title>
+        <link rel="shortcut icon" type="x-icon" href="../assets/logo.png">
         <link rel="stylesheet" href="../design/mainStyle.css">
         <script src="https://kit.fontawesome.com/2960bf0645.js" crossorigin="anonymous"></script>
         <style>
@@ -44,6 +44,12 @@ if (!isset($_SESSION['user_id'])) {
                 width: 100%;
                 position: relative;
                 border: none;
+                overflow: hidden;
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+            iframe::-webkit-scrollbar {
+            display: none;
             }
         </style>
     </head>
@@ -59,7 +65,7 @@ if (!isset($_SESSION['user_id'])) {
                 <a href="notification.php"><i class="fa-solid fa-bell"></i></a>
                 <a href="search.php"><i class="fa-solid fa-magnifying-glass"></i></a>
             </div>
-            <iframe iframe src="../../socialplatform/index.php"></iframe>
+            <iframe iframe src="home.php"></iframe> 
         </div>
     </body>
 </html>

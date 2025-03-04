@@ -44,7 +44,7 @@ if (isset($_POST['register'])) {
 
         if ($stmt->execute()) {
             $message = 'Registration successful! You can now log in.';
-            header("Location: index.php");
+            header("Location: login.php");
             exit();
         } else {
             $message = 'Registration failed. Please try again.';
