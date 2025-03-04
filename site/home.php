@@ -96,7 +96,7 @@ if (!isset($_SESSION['user_id'])) {
                     }
                 } else {
                         echo '<p>No posts found</p>';
-                    }
+                }
             ?>
         </div>
         <script src="../handlers/handlerScript.js"></script>

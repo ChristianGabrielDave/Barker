@@ -2,7 +2,7 @@ Barker
     Features
     *Post 
         -Text /
-        -Images 
+        -Images /
         -Videos
     *Edit Post
     *Delete Post
