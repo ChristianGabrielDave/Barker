@@ -82,12 +82,8 @@
                         $userrow = $userresult->fetch_assoc();
 
                         // Get like count
-                        $stmtLike = $conn->prepare("SELECT COUNT(*) as likes FROM `likes` WHERE `pid` = ?");
-                        $stmtLike->bind_param("i", $post_id);
-                        $stmtLike->execute();
-                        $likeresult = $stmtLike->get_result();
-                        $likerow = $likeresult->fetch_assoc();
-                        $likecount = $likerow['likes'];
+                        $likeResult = $conn->query("SELECT COUNT(*) AS like_count FROM likes WHERE pid = $post_id");
+                        $likeCount = $likeResult->fetch_assoc()['like_count'];
 
                         // Get comment count
                         $stmtComment = $conn->prepare("SELECT COUNT(*) as comments FROM `comments` WHERE `pid` = ?");
@@ -137,10 +133,10 @@
                         }
 
                         echo '<div class="feed-post-actions">
-                                <button class="like-btn" data-post-id="' . $post_id . '"><i class="fa-solid fa-heart"></i>(' . $likecount . ')</button>
-                                <button class="comment-btn" data-post-id="' . $post_id . '"><i class="fa-solid fa-comment"></i>(' . $commentcount . ')</button>
-                                <button class="repost-btn" data-post-id="' . $post_id . '"><i class="fa-solid fa-share"></i>(0)</button>
-                              </div></div>';
+                                <button class="like-btn" data-post-id="' . $post_id . '" onclick="likePost(' . $post_id . ')"><i class="fa-solid fa-heart"></i> (<span id="like-count-' . $post_id . '">' . $likeCount . '</span>)</button>
+                                <button class="comment-btn" data-post-id="' . $post_id . '" onclick="showCommentBox(' . $post_id . ')"><i class="fa-solid fa-comment"></i> (<span id="comment-count-' . $post_id . '">' . $commentcount . '</span>)</button>
+                                <button class="repost-btn" data-post-id="' . $post_id . '" onclick="repostPost(' . $post_id . ')"><i class="fa-solid fa-share"></i> (0)</button>
+                        </div>';
                     }
                 } else {
                     echo '<p>No posts found</p>';
@@ -148,5 +144,6 @@
             }
         ?>
     </div>
+    <script src="../handlers/handlerScript.js"></script>
 </body>
 </html>
