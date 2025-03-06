@@ -181,3 +181,20 @@ document.querySelectorAll('.close').forEach(item => {
         document.getElementById('editModal').style.display = 'none';
     });
 });
+
+function repostPost(postId) {
+    fetch('../handlers/repostHandler.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: 'post_id=' + postId
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
