@@ -198,3 +198,19 @@ function repostPost(postId) {
     })
     .catch(error => console.error('Error:', error));
 }
+
+function openEditProfileModal() {
+    document.getElementById("editProfileModal").style.display = "flex";
+}
+
+function closeEditProfileModal() {
+    document.getElementById("editProfileModal").style.display = "none";
+}
+
+// Close modal when clicking outside of it
+window.onclick = function(event) {
+    let modal = document.getElementById("editProfileModal");
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+};

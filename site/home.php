@@ -62,7 +62,7 @@ if (!isset($_SESSION['user_id'])) {
                                         <ul>
                                             <li>  
                                                 <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">
-                                                <img src="' . ($userrow['dp'] ? '../uploads/profile_pictures' . $userrow['dp'] : 'https://api.dicebear.com/6.x/initials/png?seed=' . $userrow['username'] . '&size=128') . '" 
+                                                <img src="' . ($userrow['dp'] ? '../uploads/profile_pictures/' . $userrow['dp'] : 'https://api.dicebear.com/6.x/initials/png?seed=' . $userrow['username'] . '&size=128') . '" 
                                                 alt="profile" class="account-profpic">
                                                 </a>
                                             </li>
@@ -112,7 +112,7 @@ if (!isset($_SESSION['user_id'])) {
                                     <ul>
                                         <li>
                                             <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">
-                                            <img src="' . ($userrow['dp'] ? '../uploads/profile_pictures' . $userrow['dp'] : 'https://api.dicebear.com/6.x/initials/png?seed=' . $userrow['username'] . '&size=128') . '" 
+                                            <img src="' . ($userrow['dp'] ? '../uploads/profile_pictures/' . $userrow['dp'] : 'https://api.dicebear.com/6.x/initials/png?seed=' . $userrow['username'] . '&size=128') . '" 
                                             alt="profile" class="account-profpic">
                                             </a>
                                         </li>

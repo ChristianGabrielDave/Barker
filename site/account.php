@@ -51,10 +51,55 @@
         <link rel="stylesheet" href="../design/homeStyle.css">
         <script src="https://kit.fontawesome.com/2960bf0645.js" crossorigin="anonymous"></script>
     </head>
+    <style>
+    .Profilemodal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        align-items: center;
+        justify-content: center;
+    }
+
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        width: 400px;
+        position: relative;
+    }
+
+    .close {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+    .save-btn {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        width: 100%;
+        cursor: pointer;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+
+    .save-btn:hover {
+        background-color: #0056b3;
+    }
+</style>
     <body>
         <div class="account">
             <div class="account-body">
-                <div class="account-banner" style="background-image: url('<?php echo $bp ? "../uploads/background_pictures/" . $bp : "../assets/background.png"; ?>');"> 
+            <div class="account-banner" style="background-image: url('<?php echo $bp ? "../uploads/background_pictures/" . $bp : "../assets/background.png"; ?>');">
                     <div class="account-img">
                         <ul>
                             <li>
@@ -65,15 +110,33 @@
                                 <b><?php echo htmlspecialchars($username); ?></b>
                             </li>
                         </ul>
-                        <?php
-                        if ($user_id == $_SESSION['user_id']) {
-                                echo '<button class="edit-btn"><i class="fa-solid fa-pen"></i> Edit</button>';
-                            }
-                        ?>
+                        <?php if ($user_id == $_SESSION['user_id']) : ?>
+                            <button class="edit-btn" onclick="openEditProfileModal()">
+                                <i class="fa-solid fa-pen"></i> Edit
+                            </button>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="account-bio">
                     <?php echo nl2br(htmlspecialchars($bio)); ?>
+                </div>
+                <div id="editProfileModal" class="Profilemodal">
+                <div class="modal-content">
+                    <span class="close" onclick="closeEditProfileModal()">&times;</span>
+                    <h2>Edit Profile</h2>
+                    <form action="../handlers/editProfileHandler.php" method="POST" enctype="multipart/form-data">
+                        <label for="bio">Bio:</label>
+                        <textarea name="bio" id="bio" placeholder="Update your bio..."><?php echo htmlspecialchars($bio); ?></textarea>
+                        
+                        <label for="profile_picture">Profile Picture:</label>
+                        <input type="file" name="profile_picture" id="profile_picture" accept=".jpg, .jpeg, .png">
+                        
+                        <label for="background_picture">Background Picture:</label>
+                        <input type="file" name="background_picture" id="background_picture" accept=".jpg, .jpeg, .png">
+                        
+                        <button type="submit" class="save-btn">Save Changes</button>
+                        </form>
+                    </div>
                 </div>
                 <div class="acc-feed">
                     <?php if ($user_id == $_SESSION['user_id']) : ?>
@@ -120,7 +183,7 @@
                                                 <ul>
                                                     <li>  
                                                         <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">
-                                                        <img src="' . ($userrow['dp'] ? '../uploads/profile_pictures' . $userrow['dp'] : 'https://api.dicebear.com/6.x/initials/png?seed=' . $userrow['username'] . '&size=128') . '" 
+                                                        <img src="' . ($userrow['dp'] ? '../uploads/profile_pictures/' . $userrow['dp'] : 'https://api.dicebear.com/6.x/initials/png?seed=' . $userrow['username'] . '&size=128') . '" 
                                                         alt="profile" class="account-profpic">
                                                         </a>
                                                     </li>
@@ -168,7 +231,7 @@
                                         <ul>
                                             <li>
                                                 <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">
-                                                <img src="' . ($userrow['dp'] ? '../uploads/profile_pictures' . $userrow['dp'] : 'https://api.dicebear.com/6.x/initials/png?seed=' . $userrow['username'] . '&size=128') . '" 
+                                                <img src="' . ($userrow['dp'] ? '../uploads/profile_pictures/' . $userrow['dp'] : 'https://api.dicebear.com/6.x/initials/png?seed=' . $userrow['username'] . '&size=128') . '" 
                                                 alt="profile" class="account-profpic">
                                                 </a>
                                             </li>

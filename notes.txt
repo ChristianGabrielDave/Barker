@@ -5,16 +5,16 @@ Barker
         -Images /
         -Videos
     *Edit Post
-    *Delete Post
+    *Delete Post /
 
     *Follow Each Other
     
-    *Search for Post or User
+    *Search for Post or User /
 
-    *Like Post
-    *Comment on Post
-    *Repost a Post
+    *Like Post /
+    *Comment on Post /
+    *Repost a Post /
 
-    *Change Background Picture
-    *Change Display Picture
-    *Change Bio
+    *Change Background Picture /
+    *Change Display Picture /
+    *Change Bio /
