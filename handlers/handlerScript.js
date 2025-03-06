@@ -156,3 +156,28 @@ window.deletePost = function(postId) {
         .catch(error => console.error("Error deleting post:", error));
     }
 };
+
+// Show the edit modal and fill the textarea with the existing post content
+function editPost(postId) {
+    const postContent = document.querySelector(`#post-${postId} .postDisplayBoxMessage`).innerText; // Grab the current post content
+    const postImage = document.querySelector(`#post-${postId} .postDisplayBoxImage img`);
+    const postMedia = postImage ? postImage.src : ''; // Get the current image if exists
+
+    document.getElementById('editPostText').value = postContent; // Set the current content in the textarea
+    document.getElementById('editPostId').value = postId; // Set the post id in the hidden field
+    if (postMedia) {
+        document.getElementById('editPostImage').style.display = 'block';
+        document.getElementById('editPostImage').innerHTML = `<img src="${postMedia}" alt="Post Image" style="max-width: 100px;">`; // Display the existing image if any
+    } else {
+        document.getElementById('editPostImage').style.display = 'none'; // Hide if no image
+    }
+
+    document.getElementById('editModal').style.display = 'block'; // Show the modal
+}
+
+// Close the edit modal
+document.querySelectorAll('.close').forEach(item => {
+    item.addEventListener('click', () => {
+        document.getElementById('editModal').style.display = 'none';
+    });
+});

@@ -108,6 +108,19 @@ if (!isset($_SESSION['user_id'])) {
                 <h2>Comments</h2>
                 <div id="modal-comments"></div> <!-- Scrollable Comment Section -->
             </div>
+            <div id="editModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Edit Post</h2>
+                <form id="editPostForm" method="POST" enctype="multipart/form-data">
+                    <textarea id="editPostText" name="text" placeholder="Edit your post..." class="postText"></textarea>
+                    <div id="editPostImage" style="display: none;"></div> <!-- Display image if available -->
+                    <input type="file" name="editPostImage" accept=".jpg, .png, .jpeg" class="postImage">
+                    <input type="hidden" id="editPostId" name="post_id">
+                    <button type="submit" class="post-btn">Save Changes</button>
+                </form>
+            </div>
+        </div>
         </div>
         <script src="../handlers/handlerScript.js"></script>
     </body>
