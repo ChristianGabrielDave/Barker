@@ -129,3 +129,30 @@ document.addEventListener("DOMContentLoaded", () => {
         .catch(error => console.error("Error loading comments:", error));
     }
 });
+
+window.deletePost = function(postId) {
+    if (confirm("Are you sure you want to delete this post?")) {
+        fetch("../handlers/deleteHandler.php", {
+            method: "POST",
+            body: JSON.stringify({ post_id: postId }),
+            headers: { "Content-Type": "application/json" }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Post deleted successfully.");
+                
+                // Remove the post from the page instantly
+                const postElement = document.getElementById("post-" + postId);
+                if (postElement) {
+                    postElement.remove(); // Remove the post from the DOM
+                }
+                
+                location.reload();
+            } else {
+                alert("Error deleting post.");
+            }
+        })
+        .catch(error => console.error("Error deleting post:", error));
+    }
+};

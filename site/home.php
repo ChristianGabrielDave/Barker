@@ -49,7 +49,7 @@ if (!isset($_SESSION['user_id'])) {
                         }
                         $commentCount = $commentCResult->fetch_assoc()['comment_count'];
 
-                        echo '<div class="postDisplayBoxHead">
+                        echo '<div  id="post-'. $post_id . '" class="postDisplayBoxHead">
                                 <ul>
                                     <li>
                                         <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">

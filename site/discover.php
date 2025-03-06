@@ -36,6 +36,7 @@
                 $userresult = $stmt->get_result();
 
                 if ($userresult->num_rows > 0) {
+                    echo '<h1>Users</h1>';
                     while ($userrow = $userresult->fetch_assoc()) {
                         echo '<div class="postDisplayBoxHead">
                             <ul>
@@ -70,6 +71,7 @@
                 $postresult = $stmt->get_result();
 
                 if ($postresult->num_rows > 0) {
+                    echo '<h1>Posts</h1>';
                     while ($postrow = $postresult->fetch_assoc()) {
                         $post_id = $postrow['id'];
                         $user_id = $postrow['uid'];
