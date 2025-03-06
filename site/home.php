@@ -38,13 +38,16 @@ if (!isset($_SESSION['user_id'])) {
                         $userresult = mysqli_query($conn, $usersql);
                         $userrow = mysqli_fetch_assoc($userresult);
 
-                        $likeResult = $conn->query("SELECT COUNT(*) AS like_count FROM likes WHERE pid = $post_id");
+                        $likeResult = $conn->query("SELECT COUNT(*) AS like_count FROM likes WHERE pid = $post_id;");
                         $likeCount = $likeResult->fetch_assoc()['like_count'];
 
-                        $commentsql = "SELECT COUNT(*) as comments FROM `comments` WHERE `pid` = $post_id;";
-                        $commentresult = mysqli_query($conn, $commentsql);
-                        $commentrow = mysqli_fetch_assoc($commentresult);
-                        $commentcount = $commentrow["comments"];
+                        $commentResult = $conn->query("SELECT * FROM comments WHERE pid = $post_id ORDER BY doc DESC LIMIT 2;");
+                        $commentCResult = $conn->query("SELECT COUNT(*) AS comment_count FROM comments WHERE pid = $post_id;");
+                        $comments = [];
+                        while ($commentRow = $commentResult->fetch_assoc()) {
+                            $comments[] = $commentRow;
+                        }
+                        $commentCount = $commentCResult->fetch_assoc()['comment_count'];
 
                         echo '<div class="postDisplayBoxHead">
                                 <ul>
@@ -86,15 +89,25 @@ if (!isset($_SESSION['user_id'])) {
                             }
 
                         echo '<div class="feed-post-actions">
-                            <button class="like-btn" data-post-id="' . $post_id . '" onclick="likePost(' . $post_id . ')"><i class="fa-solid fa-heart"></i> (<span id="like-count-' . $post_id . '">' . $likeCount . '</span>)</button>
-                            <button class="comment-btn" data-post-id="' . $post_id . '" onclick="showCommentBox(' . $post_id . ')"><i class="fa-solid fa-comment"></i> (<span id="comment-count-' . $post_id . '">' . $commentcount . '</span>)</button>
-                            <button class="repost-btn" data-post-id="' . $post_id . '" onclick="repostPost(' . $post_id . ')"><i class="fa-solid fa-share"></i> (0)</button>
+                            <button class="like-btn" data-post-id="' . $post_id . '" onclick="likePost(' . $post_id . ')"><i class="fa-solid fa-heart"></i> <span id="like-count-' . $post_id . '">' . $likeCount . '</span></button>
+                            <button class="comment-btn" data-post-id="' . $post_id . '" onclick="showCommentBox(' . $post_id . ')"><i class="fa-solid fa-comment"></i> <span id="comment-count-' . $post_id . '">' . $commentCount . '</span></button>
+                            <button class="repost-btn" data-post-id="' . $post_id . '" onclick="repostPost(' . $post_id . ')"><i class="fa-solid fa-share"></i></button>
                         </div>';
+                        echo "</div>";
                     }
                 } else {
                         echo '<p>No posts found</p>';
-                }
+                    }
             ?>
+        </div>
+            <div id="commentModal" class="modal">
+                <div class="modal-content">
+                <span class="close">&times;</span>
+                <textarea id="commentText" placeholder="Write a comment..."></textarea>
+                <button id="submitComment">Post Comment</button>
+                <h2>Comments</h2>
+                <div id="modal-comments"></div> <!-- Scrollable Comment Section -->
+            </div>
         </div>
         <script src="../handlers/handlerScript.js"></script>
     </body>

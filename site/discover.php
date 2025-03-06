@@ -144,6 +144,16 @@
             }
         ?>
     </div>
+    </div>
+        <div id="commentModal" class="modal">
+            <div class="modal-content">
+            <span class="close">&times;</span>
+            <textarea id="commentText" placeholder="Write a comment..."></textarea>
+            <button id="submitComment">Post Comment</button>
+            <h2>Comments</h2>
+            <div id="modal-comments"></div> <!-- Scrollable Comment Section -->
+        </div>
+    </div>
     <script src="../handlers/handlerScript.js"></script>
 </body>
 </html>
