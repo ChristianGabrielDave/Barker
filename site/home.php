@@ -185,7 +185,7 @@ if (!isset($_SESSION['user_id'])) {
                 <textarea id="commentText" placeholder="Write a comment..."></textarea>
                 <button id="submitComment">Post Comment</button>
                 <h2>Comments</h2>
-                <div id="modal-comments"></div> <!-- Scrollable Comment Section -->
+                <div id="modal-comments"></div> <!-- Scrollable Comment Section mewthhed lolis-->
             </div>
         </div>
         <div id="editModal" class="modal">

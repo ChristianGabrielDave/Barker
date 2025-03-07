@@ -59,7 +59,7 @@ if (!isset($_SESSION['user_id'])) {
                 <a href="notification.php"><i class="fa-solid fa-bell"></i></a>
                 <a href="search.php"><i class="fa-solid fa-magnifying-glass"></i></a>
             </div>
-            <iframe iframe src="#"></iframe>
+            <iframe iframe src="alert.php"></iframe>
         </div>
     </body>
 </html>

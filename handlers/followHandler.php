@@ -17,6 +17,15 @@ if (isset($_POST['followed_id']) && isset($_POST['action'])) {
         $stmt = $conn->prepare("INSERT INTO followers (follower_id, followed_id) VALUES (?, ?)");
         $stmt->bind_param("ii", $follower_id, $followed_id);
         $stmt->execute();
+
+        $notif_stmt = $conn->prepare("
+    INSERT INTO notifications (user_id, type, from_user_id, message) 
+    VALUES (?, 'follow', ?, ?)
+");
+$message = "started following you.";
+$notif_stmt->bind_param("iis", $followed_id, $follower_id, $message);
+$notif_stmt->execute();
+
     } elseif ($action == 'unfollow') {
         // Remove the follow relationship
         $stmt = $conn->prepare("DELETE FROM followers WHERE follower_id = ? AND followed_id = ?");
