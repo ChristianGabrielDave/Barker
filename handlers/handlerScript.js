@@ -157,30 +157,6 @@ window.deletePost = function(postId) {
     }
 };
 
-// Show the edit modal and fill the textarea with the existing post content
-function editPost(postId) {
-    const postContent = document.querySelector(`#post-${postId} .postDisplayBoxMessage`).innerText; // Grab the current post content
-    const postImage = document.querySelector(`#post-${postId} .postDisplayBoxImage img`);
-    const postMedia = postImage ? postImage.src : ''; // Get the current image if exists
-
-    document.getElementById('editPostText').value = postContent; // Set the current content in the textarea
-    document.getElementById('editPostId').value = postId; // Set the post id in the hidden field
-    if (postMedia) {
-        document.getElementById('editPostImage').style.display = 'block';
-        document.getElementById('editPostImage').innerHTML = `<img src="${postMedia}" alt="Post Image" style="max-width: 100px;">`; // Display the existing image if any
-    } else {
-        document.getElementById('editPostImage').style.display = 'none'; // Hide if no image
-    }
-
-    document.getElementById('editModal').style.display = 'block'; // Show the modal
-}
-
-// Close the edit modal
-document.querySelectorAll('.close').forEach(item => {
-    item.addEventListener('click', () => {
-        document.getElementById('editModal').style.display = 'none';
-    });
-});
 
 function repostPost(postId) {
     fetch('../handlers/repostHandler.php', {
@@ -214,3 +190,126 @@ window.onclick = function(event) {
         modal.style.display = "none";
     }
 };
+
+// JavaScript to handle the edit functionality
+function editPost(postId) {
+    // Fetch the current post content using the postId (AJAX or fetch request)
+    fetch(`../handlers/getPost.php?post_id=${postId}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Populate the edit modal with the current post's content
+                document.getElementById('editText').value = data.content;
+                document.getElementById('editPostId').value = postId;
+
+                // Show the modal
+                document.getElementById('editModal').style.display = 'block';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+}
+
+// Close edit modal
+document.querySelector('.close-edit-modal').onclick = function() {
+    document.getElementById('editModal').style.display = 'none';
+};
+
+// Save edited post
+document.getElementById('editForm').onsubmit = function(event) {
+    event.preventDefault();
+
+    const postId = document.getElementById('editPostId').value;
+    const updatedContent = document.getElementById('editText').value;
+
+    // Send updated post content to the server
+    fetch('../handlers/editPostHandler.php', {
+        method: 'POST',
+        body: new URLSearchParams({
+            post_id: postId,
+            content: updatedContent
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update the content in the post display area (if you don't want to reload the page)
+            document.getElementById('post-' + postId).querySelector('.postDisplayBoxMessage').innerText = updatedContent;
+            document.getElementById('editModal').style.display = 'none';
+        } else {
+            alert('Error saving post!');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+};
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    // Handle the edit button click
+    document.querySelectorAll(".edit-btn").forEach(button => {
+        button.addEventListener("click", function () {
+            const postId = this.getAttribute("data-post-id");
+            const postContent = this.getAttribute("data-post-content");
+            const postMedia = this.getAttribute("data-post-media");
+
+            openEditModal(postId, postContent, postMedia); // Open modal with post data
+        });
+    });
+
+    // Modal opening function
+    function openEditModal(postId, content, media) {
+        document.getElementById("editPostId").value = postId;
+        document.getElementById("editPostText").value = content;
+    
+        let imageContainer = document.getElementById("editPostImage");
+        if (media) {
+            imageContainer.innerHTML = `<img src="../uploads/${media}" style="width: 100%; border-radius: 5px;">`;
+            imageContainer.style.display = "block";
+        } else {
+            imageContainer.style.display = "none";
+        }
+    
+        document.getElementById("editModal").classList.add("show");
+    }
+    
+
+    // Close modal when clicking the close button
+    document.querySelectorAll('.close').forEach(item => {
+        item.addEventListener('click', () => {
+            document.getElementById('editModal').style.display = 'none';
+        });
+    });
+
+    // Close modal when clicking outside of it
+    window.addEventListener('click', function (event) {
+        let modal = document.getElementById("editModal");
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+});
+
+document.getElementById("followBtn").addEventListener("click", function() {
+    let followedId = this.getAttribute("data-followed-id");
+    // Toggle follow/unfollow action based on current state; here we assume "follow"
+    let action = "follow"; // or "unfollow" if already following
+
+    fetch("followHandler.php", {
+        method: "POST",
+        body: new URLSearchParams({ followed_id: followedId, action: action }),
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update UI accordingly
+            console.log("Action successful:", action);
+        } else {
+            alert("Error: " + data.error);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+});

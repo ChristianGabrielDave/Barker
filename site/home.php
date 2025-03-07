@@ -26,8 +26,24 @@ if (!isset($_SESSION['user_id'])) {
         </div>
         <div class="postContainer">
             <?php
-                $postsql = "SELECT `id`, `content`, `media`, `uid`, `dop`, `repost` FROM `posts` ORDER BY `dop` DESC;";
-                $postresult = mysqli_query($conn, $postsql);
+                $followedUsersSql = "SELECT followed_id FROM followers WHERE follower_id = ?";
+                $stmt = $conn->prepare($followedUsersSql);
+                $stmt->bind_param("i", $_SESSION['user_id']);
+                $stmt->execute();
+                $followedUsersResult = $stmt->get_result();
+
+                $followedUsers = [$_SESSION['user_id']];
+                while ($row = $followedUsersResult->fetch_assoc()) {
+                    $followedUsers[] = $row['followed_id'];
+                }
+
+
+                // Check if the user follows anyone
+                if (count($followedUsers) > 0) {
+                // Display posts from followed users only
+                    $followedUserIds = implode(",", $followedUsers);
+                    $postsql = "SELECT id, content, media, uid, dop, repost FROM posts WHERE uid IN ($followedUserIds) ORDER BY dop DESC";
+                    $postresult = mysqli_query($conn, $postsql);
 
                 if (mysqli_num_rows($postresult) > 0) {
                     while ($postrow = mysqli_fetch_assoc($postresult)) {
@@ -129,7 +145,7 @@ if (!isset($_SESSION['user_id'])) {
                                 echo '<div class="more-options">
                                         <button class="more-btn">⋮</button>
                                             <div class="dropdown-content" style="display: none;">
-                                                <button class="edit-btn" onclick="editPost(' . $post_id . ')"><i class="fa-solid fa-pen"></i> Edit</button>
+                                                <button class="edit-btn" onclick="openEditModal(' . $post_id . ', \'' . htmlspecialchars($postrow['content'], ENT_QUOTES, 'UTF-8') . '\', \'' . $postrow['media'] . '\')" data-post-id="' . $post_id . '" data-post-content="' . htmlspecialchars($postrow['content'], ENT_QUOTES, 'UTF-8') . '" data-post-media="' . $postrow['media'] . '"><i class="fa-solid fa-pen"></i> Edit</button>
                                                 <button class="delete-btn" onclick="deletePost('. $post_id . ')"><i class="fa-solid fa-trash"></i> Delete</button>
                                             </div>
                                         </div>';
@@ -155,9 +171,12 @@ if (!isset($_SESSION['user_id'])) {
                             echo "</div>";
                         }
                     }
+                }  else {
+                    echo '<p>No posts from followed users</p>';
+                }
                 } else {
-                        echo '<p>No posts found</p>';
-                    }
+                    echo '<p>You are not following anyone yet</p>';
+                }
             ?>
         </div>
             <div id="commentModal" class="modal">
@@ -168,20 +187,19 @@ if (!isset($_SESSION['user_id'])) {
                 <h2>Comments</h2>
                 <div id="modal-comments"></div> <!-- Scrollable Comment Section -->
             </div>
-            <div id="editModal" class="modal" style="display: none;">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Edit Post</h2>
-                <form id="editPostForm" method="POST" enctype="multipart/form-data">
-                    <textarea id="editPostText" name="text" placeholder="Edit your post..." class="postText"></textarea>
-                    <div id="editPostImage" style="display: none;"></div> <!-- Display image if available -->
-                    <input type="file" name="editPostImage" accept=".jpg, .png, .jpeg" class="postImage">
-                    <input type="hidden" id="editPostId" name="post_id">
-                    <button type="submit" class="post-btn">Save Changes</button>
-                </form>
-            </div>
         </div>
-        </div>
+        <div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form id="editPostForm">
+            <textarea id="editPostText" name="content" placeholder="Edit your post..."></textarea>
+            <input type="hidden" id="editPostId" name="post_id">
+            <div id="editPostImage"></div>
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</div>
+
         <script src="../handlers/handlerScript.js"></script>
     </body>
 </html>

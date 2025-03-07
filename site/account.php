@@ -117,6 +117,32 @@
                         <?php endif; ?>
                     </div>
                 </div>
+                <?php
+// Check if the logged-in user follows the current profile
+$followStatus = false;
+if ($_SESSION['user_id'] != $user_id) {
+    $checkFollowSql = "SELECT * FROM followers WHERE follower_id = ? AND followed_id = ?";
+    $stmt = $conn->prepare($checkFollowSql);
+    $stmt->bind_param("ii", $_SESSION['user_id'], $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        $followStatus = true;
+    }
+}
+?>
+<!-- Follow Button -->
+<?php if ($_SESSION['user_id'] != $user_id): ?>
+    <form action="../handlers/followHandler.php" method="POST">
+    <input type="hidden" name="followed_id" value="<?php echo $user_id; ?>">
+    <input type="hidden" name="username" value="<?php echo htmlspecialchars($username); ?>">
+    <?php if ($followStatus): ?>
+        <button type="submit" name="action" value="unfollow">Unfollow</button>
+    <?php else: ?>
+        <button type="submit" name="action" value="follow">Follow</button>
+    <?php endif; ?>
+</form>
+<?php endif; ?>
                 <div class="account-bio">
                     <?php echo nl2br(htmlspecialchars($bio)); ?>
                 </div>
@@ -290,5 +316,28 @@
             </div>
         </div>
         <script src="../handlers/handlerScript.js"></script>
+        <script>
+            document.getElementById("followBtn").addEventListener("click", function() {
+    let followedId = this.getAttribute("data-followed-id");
+    // Determine the action based on current state (this example assumes "follow")
+    let action = "follow"; // Change to "unfollow" if already following
+
+    fetch("../handlers/followHandler.php", {
+        method: "POST",
+        body: new URLSearchParams({ followed_id: followedId, action: action }),
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log("Follow action successful:", action);
+            // Optionally update button text or state here
+        } else {
+            alert("Error: " + data.error);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+});
+        </script>
     </body>
 </html>
