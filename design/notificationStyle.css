@@ -1,0 +1,8 @@
+h2 {
+    color: rgba(168, 147, 120, 1);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    position: relative;
+    font-size: 25px;
+    font-style: bold;
+    left: 50px;
+}
