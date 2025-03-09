@@ -48,6 +48,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../design/commentStyle.css">
         <link rel="stylesheet" href="../design/homeStyle.css">
         <script src="https://kit.fontawesome.com/2960bf0645.js" crossorigin="anonymous"></script>
     </head>
@@ -82,8 +83,8 @@
     }
 
     .save-btn {
-        background-color: #007bff;
-        color: white;
+        background-color:rgba(255, 249, 235, 1);
+        color: rgba(168, 147, 120, 1);
         border: none;
         padding: 10px;
         width: 100%;
@@ -93,8 +94,56 @@
     }
 
     .save-btn:hover {
-        background-color: #0056b3;
+        border: 2px solid rgba(68, 49, 43, 1);
+    background-color: rgba(68, 49, 43, 1);
+    cursor: pointer;
     }
+
+    .account-banner {
+        width: 90%;
+    border-radius: 15px;
+    padding: 10px;
+    margin-bottom: 30px;
+    position: relative;
+    left: 45px;
+    top: 10px;
+    }
+    .account-bio {
+        position: relative;
+        left: 5px;
+    }
+
+    .account-img li{
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    left: -30px;
+}
+.account-img img{
+    height: 40px;
+    border-radius: 360px;
+    border: solid rgba(68, 49, 43, 1) 3px;
+}
+
+    .edit-btn {
+    position: relative;
+    top: -20px;
+    left: 590px;
+    border-radius: 10px;
+    border: none;
+    height: auto;
+    width: auto;
+    background-color: rgba(255, 249, 235, 1);
+    color: rgba(168, 147, 120, 1);
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.edit-btn:hover {
+    color: rgba(68, 49, 43, 1);
+    cursor: pointer;
+}
+
 </style>
     <body>
         <div class="account">
@@ -109,12 +158,17 @@
                             <li>
                                 <b><?php echo htmlspecialchars($username); ?></b>
                             </li>
+                            <li>
+                            <?php if ($user_id == $_SESSION['user_id']) : ?>
+                                <button class="edit-btn" onclick="openEditProfileModal()">
+                                    <i class="fa-solid fa-pen"></i> Edit
+                                </button>
+                            <?php endif; ?>
+                            </li>
                         </ul>
-                        <?php if ($user_id == $_SESSION['user_id']) : ?>
-                            <button class="edit-btn" onclick="openEditProfileModal()">
-                                <i class="fa-solid fa-pen"></i> Edit
-                            </button>
-                        <?php endif; ?>
+                        <div class="account-bio">
+                            <?php echo nl2br(htmlspecialchars($bio)); ?>
+                        </div>
                     </div>
                 </div>
     <?php
@@ -141,9 +195,6 @@
         <?php endif; ?>
     </form>
     <?php endif; ?>
-        <div class="account-bio">
-            <?php echo nl2br(htmlspecialchars($bio)); ?>
-        </div>
         <div id="editProfileModal" class="Profilemodal">
             <div class="modal-content">
                 <span class="close" onclick="closeEditProfileModal()">&times;</span>
@@ -204,18 +255,22 @@
                                 $originalUser = mysqli_fetch_assoc($originalUserResult);
                         
                                 echo '<div class="repost-container">
-                                        <ul>
-                                            <li>  
-                                                <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">
-                                                <img src="' . ($userrow['dp'] ? '../uploads/profile_pictures/' . $userrow['dp'] : 'https://api.dicebear.com/6.x/initials/png?seed=' . $userrow['username'] . '&size=128') . '" 
-                                                alt="profile" class="account-profpic">
-                                                </a>
-                                            </li>
-                                            <li style="padding-left: 10px; padding-right: 10px;">
-                                                <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">' . $userrow['username'] . '</a>
-                                                <p> reposted <a href="account.php?username=' . $originalUser['username'] .'" style="text-decoration: none;">' . $originalUser['username'] . '</a>\'s post.</p>
-                                            </li>
-                                        </ul>';
+                                        <div class="repostDisplayBoxHead">
+                                            <ul>
+                                                <li>  
+                                                    <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">
+                                                    <img src="' . ($userrow['dp'] ? '../uploads/profile_pictures/' . $userrow['dp'] : 'https://api.dicebear.com/6.x/initials/png?seed=' . $userrow['username'] . '&size=128') . '" 
+                                                    alt="profile" class="account-profpic">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">' . $userrow['username'] . '</a>
+                                                </li>
+                                                <li>
+                                                    <p> reposted <a href="account.php?username=' . $originalUser['username'] .'" style="text-decoration: none;">' . $originalUser['username'] . '</a>\'s post.</p>
+                                                </li>
+                                            </ul>
+                                        </div>';
                                 echo '<div class="postDisplayBoxHead">
                                         <ul>
                                             <li>
@@ -231,7 +286,7 @@
                                                 <small>' . $originalPost['dop'] . '</small>
                                             </li>
                                         </ul>
-                                        </div>';
+                                      </div>';
                                 
                                 echo '<div class="repost-box">' . nl2br(htmlspecialchars($originalPost['content'])) . '</div>';
                         
@@ -243,58 +298,61 @@
                                         </div>';
                                 }
                                 echo '<div class="feed-post-actions">
-                                <button class="like-btn" data-post-id="' . $post_id . '" onclick="likePost(' . $post_id . ')"><i class="fa-solid fa-heart"></i> (<span id="like-count-' . $post_id . '">' . $likeCount . '</span>)</button>
-                                <button class="comment-btn" data-post-id="' . $post_id . '" onclick="showCommentBox(' . $post_id . ')"><i class="fa-solid fa-comment"></i> (<span id="comment-count-' . $post_id . '">' . $commentCount . '</span>)</button>';                                  
+                                        <button class="like-btn" data-post-id="' . $post_id . '" onclick="likePost(' . $post_id . ')"><i class="fa-solid fa-heart"></i> (<span id="like-count-' . $post_id . '">' . $likeCount . '</span>)</button>
+                                        <button class="comment-btn" data-post-id="' . $post_id . '" onclick="showCommentBox(' . $post_id . ')"><i class="fa-solid fa-comment"></i> (<span id="comment-count-' . $post_id . '">' . $commentCount . '</span>)</button>';
+                                        
                                 if ($user_id == $_SESSION['user_id']) {        
-                                        echo '<button class="delete-btn" onclick="deletePost('. $post_id . ')"><i class="fa-solid fa-trash"></i></button>
-                                        </div>';
+                                        echo '<button class="redelete-btn" onclick="deletePost('. $post_id . ')"><i class="fa-solid fa-trash"></i></button>
+                                            </div>';
                                         echo '</div>';
                                 }
                             }
-                        } echo '<div class="postDisplayBoxHead">
-                                <ul>
-                                    <li>
-                                        <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">
-                                        <img src="' . ($userrow['dp'] ? '../uploads/profile_pictures/' . $userrow['dp'] : 'https://api.dicebear.com/6.x/initials/png?seed=' . $userrow['username'] . '&size=128') . '" 
-                                        alt="profile" class="account-profpic">
-                                        </a>
+                        } else {
+                            echo '<div class="postDisplayBox">
+                                <div  id="post-'. $post_id . '" class="postDisplayBoxHead">
+                                    <ul>
+                                        <li>
+                                            <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">
+                                            <img src="' . ($userrow['dp'] ? '../uploads/profile_pictures/' . $userrow['dp'] : 'https://api.dicebear.com/6.x/initials/png?seed=' . $userrow['username'] . '&size=128') . '" 
+                                            alt="profile" class="account-profpic">
+                                            </a>
+                                        </li>
+                                        <li style="padding-left: 10px; padding-right: 10px;">
+                                            <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">' . $userrow['username'] . '</a>
+                                        </li>
+                                        <li style="vertical-align:baseline;">
+                                            <small>' . $postrow['dop'] . '</small>
+                                        </li>
+                                    ';
+                            
+                            if ($user_id == $_SESSION['user_id']) {
+                                echo '<li>
+                                        <button class="delete-btn" onclick="deletePost('. $post_id . ')"><i class="fa-solid fa-trash"></i></button>
                                     </li>
-                                    <li style="padding-left: 10px; padding-right: 10px;">
-                                        <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">' . $userrow['username'] . '</a>
-                                    </li>
-                                    <li style="vertical-align:baseline;">
-                                    <small>' . $postrow['dop'] . '</small>
-                                    </li>
-                                </ul>
-                                </div>';
-                        
-                        if ($user_id == $_SESSION['user_id']) {
-                            echo '<div class="more-options">
-                                    <button class="more-btn">⋮</button>
-                                        <div class="dropdown-content" style="display: none;">
-                                            <button class="edit-btn" onclick="editPost(' . $post_id . ')"><i class="fa-solid fa-pen"></i> Edit</button>
-                                            <button class="delete-btn" onclick="deletePost('. $post_id . ')"><i class="fa-solid fa-trash"></i> Delete</button>
-                                        </div>
+                                    </ul>
                                     </div>';
-                        }
-
-                        echo '<div class="postDisplayBoxMessage">
-                            ' . nl2br(htmlspecialchars($postrow['content'])) . '
-                                </div>';
-                
-                        if (!empty($postrow['media'])) {
-                            echo '<div class="postDisplayBoxImage">
-                                <a href="../uploads/' . $postrow['media'] . '" target="_blank">
-                                    <img src="../uploads/' . $postrow['media'] . '" alt="' . $postrow['media'] . '" style="width: 100%; object-fit: contain; margin-bottom: 20px; border-radius: 5px;">
-                                </a>
-                                </div>';
                             }
 
-                        echo '<div class="feed-post-actions">
-                                <button class="like-btn" data-post-id="' . $post_id . '" onclick="likePost(' . $post_id . ')"><i class="fa-solid fa-heart"></i> (<span id="like-count-' . $post_id . '">' . $likeCount . '</span>)</button>
-                                <button class="comment-btn" data-post-id="' . $post_id . '" onclick="showCommentBox(' . $post_id . ')"><i class="fa-solid fa-comment"></i> (<span id="comment-count-' . $post_id . '">' . $commentCount . '</span>)</button>
+                            echo '<div class="postDisplayBoxMessage">
+                                ' . nl2br(htmlspecialchars($postrow['content'])) . '
+                                    </div>';
+                    
+                            if (!empty($postrow['media'])) {
+                                echo '<div class="postDisplayBoxImage">
+                                    <a href="../uploads/' . $postrow['media'] . '" target="_blank">
+                                        <img src="../uploads/' . $postrow['media'] . '" alt="' . $postrow['media'] . '" style="width: 100%; object-fit: contain; margin-bottom: 20px; border-radius: 5px;">
+                                    </a>
+                                    </div>';
+                                }
+
+                            echo '<div class="feed-post-actions">
+                                <button class="like-btn" data-post-id="' . $post_id . '" onclick="likePost(' . $post_id . ')"><i class="fa-solid fa-heart"></i> <span id="like-count-' . $post_id . '">' . $likeCount . '</span></button>
+                                <button class="comment-btn" data-post-id="' . $post_id . '" onclick="showCommentBox(' . $post_id . ')"><i class="fa-solid fa-comment"></i> <span id="comment-count-' . $post_id . '">' . $commentCount . '</span></button>
                                 <button class="repost-btn" data-post-id="' . $post_id . '" onclick="repostPost(' . $post_id . ')"><i class="fa-solid fa-share"></i></button>
-                    </div>';
+                            </div>';
+                            echo "</div>
+                            </div>";
+                        }
                     }
                 } else {
                         echo '<p>No posts found</p>';

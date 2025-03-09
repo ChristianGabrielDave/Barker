@@ -13,72 +13,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../design/commentStyle.css">
     <script src="https://kit.fontawesome.com/2960bf0645.js" crossorigin="anonymous"></script>
     <style>
-        modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    width: 50%;
-    max-width: 500px;
-    max-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    position: relative;
-}
-
-.close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-#commentModal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-}
-
-#commentModal.show {
-    visibility: visible;
-    opacity: 1;
-}
-
-#modal-comments {
-    max-height: 50vh;
-    overflow-y: auto;
-    padding: 10px;
-    border-top: 1px solid #ddd;
-    background-color: #f9f9f9;
-}
 h1 {
         color: rgba(168, 147, 120);
         font-family: 'Franklin Gothic Medium';
@@ -427,10 +364,10 @@ h1 {
         </div>
         <div id="commentModal" class="modal">
             <div class="modal-content">
-                <span class="close">&times;</span>
-                <textarea id="commentText" placeholder="Write a comment..."></textarea>
-                <button id="submitComment">Post Comment</button>
-                <h2>Comments</h2>
+            <span class="close">&times;</span>
+            <textarea id="commentText" placeholder="Write a comment..."></textarea>
+            <button id="submitComment">Post Comment</button>
+            <h2>Comments</h2>
             <div id="modal-comments"></div>
         </div>
     </div>
