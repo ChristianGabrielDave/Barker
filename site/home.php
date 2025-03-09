@@ -74,7 +74,9 @@ if (!isset($_SESSION['user_id'])) {
                                 $originalUserResult = mysqli_query($conn, $originalUserSql);
                                 $originalUser = mysqli_fetch_assoc($originalUserResult);
                         
-                                echo '<div class="repost-container">
+                                echo '
+                                    <div class="repost-container">
+                                    <div class="repostDisplayBoxHead">
                                         <ul>
                                             <li>  
                                                 <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">
@@ -82,11 +84,14 @@ if (!isset($_SESSION['user_id'])) {
                                                 alt="profile" class="account-profpic">
                                                 </a>
                                             </li>
-                                            <li style="padding-left: 10px; padding-right: 10px;">
+                                            <li>
                                                 <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">' . $userrow['username'] . '</a>
+                                            </li>
+                                            <li>
                                                 <p> reposted <a href="account.php?username=' . $originalUser['username'] .'" style="text-decoration: none;">' . $originalUser['username'] . '</a>\'s post.</p>
                                             </li>
-                                        </ul>';
+                                        </ul>
+                                        </div>';
                                 echo '<div class="postDisplayBoxHead">
                                         <ul>
                                             <li>
@@ -118,13 +123,14 @@ if (!isset($_SESSION['user_id'])) {
                                         <button class="comment-btn" data-post-id="' . $post_id . '" onclick="showCommentBox(' . $post_id . ')"><i class="fa-solid fa-comment"></i> (<span id="comment-count-' . $post_id . '">' . $commentCount . '</span>)</button>';
                                         
                                 if ($user_id == $_SESSION['user_id']) {        
-                                        echo '<button class="delete-btn" onclick="deletePost('. $post_id . ')"><i class="fa-solid fa-trash"></i></button>
+                                        echo '<button class="redelete-btn" onclick="deletePost('. $post_id . ')"><i class="fa-solid fa-trash"></i></button>
                                         </div>';
                                         echo '</div>';
                                 }
                             }
                         } else {
-                            echo '<div  id="post-'. $post_id . '" class="postDisplayBoxHead">
+                            echo '<div class="postDisplayBox">
+                                <div  id="post-'. $post_id . '" class="postDisplayBoxHead">
                                     <ul>
                                         <li>
                                             <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">
@@ -138,17 +144,14 @@ if (!isset($_SESSION['user_id'])) {
                                         <li style="vertical-align:baseline;">
                                         <small>' . $postrow['dop'] . '</small>
                                         </li>
-                                    </ul>
-                                    </div>';
+                                    ';
                             
                             if ($user_id == $_SESSION['user_id']) {
-                                echo '<div class="more-options">
-                                        <button class="more-btn">⋮</button>
-                                            <div class="dropdown-content" style="display: none;">
-                                                <button class="edit-btn" onclick="openEditModal(' . $post_id . ', \'' . htmlspecialchars($postrow['content'], ENT_QUOTES, 'UTF-8') . '\', \'' . $postrow['media'] . '\')" data-post-id="' . $post_id . '" data-post-content="' . htmlspecialchars($postrow['content'], ENT_QUOTES, 'UTF-8') . '" data-post-media="' . $postrow['media'] . '"><i class="fa-solid fa-pen"></i> Edit</button>
-                                                <button class="delete-btn" onclick="deletePost('. $post_id . ')"><i class="fa-solid fa-trash"></i> Delete</button>
-                                            </div>
-                                        </div>';
+                                echo '<li>
+                                        <button class="delete-btn" onclick="deletePost('. $post_id . ')"><i class="fa-solid fa-trash"></i></button>
+                                    </li>
+                                    </ul>
+                                    </div>';
                             }
 
                             echo '<div class="postDisplayBoxMessage">
@@ -168,14 +171,15 @@ if (!isset($_SESSION['user_id'])) {
                                 <button class="comment-btn" data-post-id="' . $post_id . '" onclick="showCommentBox(' . $post_id . ')"><i class="fa-solid fa-comment"></i> <span id="comment-count-' . $post_id . '">' . $commentCount . '</span></button>
                                 <button class="repost-btn" data-post-id="' . $post_id . '" onclick="repostPost(' . $post_id . ')"><i class="fa-solid fa-share"></i></button>
                             </div>';
-                            echo "</div>";
+                            echo "</div>
+                            </div>";
                         }
                     }
                 }  else {
-                    echo '<p>No posts from followed users</p>';
+                    echo '<p class="infoText">No posts from followed users</p>';
                 }
                 } else {
-                    echo '<p>You are not following anyone yet</p>';
+                    echo '<p class="infoText">You are not following anyone yet</p>';
                 }
             ?>
         </div>

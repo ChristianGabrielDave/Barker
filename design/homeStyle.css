@@ -1,11 +1,14 @@
-/* Dropdown More Options */
+* {
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
 .more-options {
     display: inline;
     position: relative;
 }
 
 .dropdown-content {
-    display: none; /* Initially hidden */
+    display: none;
     position: absolute;
     background-color: #f9f9f9;
     min-width: 160px;
@@ -29,9 +32,8 @@
     background-color: #f2f2f2;
 }
 
-/* Modal Styling */
 .modal {
-    display: none; /* Initially hidden */
+    display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -49,14 +51,13 @@
     border-radius: 10px;
     width: 50%;
     max-width: 500px;
-    max-height: 80vh; /* Limit modal height */
+    max-height: 80vh;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Prevents content overflow */
+    overflow: hidden;
     position: relative;
 }
 
-/* Close Button */
 .close {
     position: absolute;
     top: 10px;
@@ -65,9 +66,8 @@
     cursor: pointer;
 }
 
-/* Comment Modal */
 #commentModal {
-    display: none; /* Ensure the modal is hidden initially */
+    display: none;
     position: fixed;
     z-index: 1000;
     left: 0;
@@ -79,8 +79,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    visibility: hidden; /* Prevents it from flashing */
-    opacity: 0; /* Invisible initially */
+    visibility: hidden;
+    opacity: 0;
     transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
 }
 
@@ -89,17 +89,14 @@
     opacity: 1;
 }
 
-
-/* Scrollable Comment Section */
 #modal-comments {
-    max-height: 50vh; /* Limits height */
-    overflow-y: auto; /* Enables scrolling */
+    max-height: 50vh;
+    overflow-y: auto;
     padding: 10px;
     border-top: 1px solid #ddd;
     background-color: #f9f9f9;
 }
 
-/* Comment Box */
 textarea {
     width: 100%;
     height: 80px;
@@ -110,7 +107,6 @@ textarea {
     font-size: 14px;
 }
 
-/* Submit Button */
 #submitComment {
     margin-top: 10px;
     padding: 10px;
@@ -127,7 +123,6 @@ textarea {
     background-color: #006edc;
 }
 
-/* Comment Items */
 .comment-item {
     display: flex;
     flex-direction: column;
@@ -136,7 +131,6 @@ textarea {
     background-color: white;
 }
 
-/* Profile Picture */
 .comment-profile-pic {
     width: 32px;
     height: 32px;
@@ -144,26 +138,22 @@ textarea {
     margin-right: 8px;
 }
 
-/* Comment Header */
 .comment-header {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-/* Username Styling */
 .comment-username {
     font-weight: bold;
     text-decoration: none;
     color: #333;
 }
 
-/* Comment Text */
 .comment-text {
     margin: 5px 0;
 }
 
-/* Comment Date */
 .comment-date {
     font-size: 12px;
     color: #777;
@@ -187,7 +177,6 @@ textarea {
     height: 40px;
     border-radius: 50%;
 }
-
 
 .edit-profile {
     background-color: #fff;
@@ -232,3 +221,255 @@ textarea {
     background-color: #45a049;
 }
 
+body{
+    background-color: rgba(255, 249, 235);
+}
+
+.postBox {
+    width: 90%;
+    background: rgba(168, 147, 120, 1);
+    border-radius: 15px;
+    padding: 10px;
+    margin-bottom: 30px;
+    position: relative;
+    left: 45px;
+    top: 10px;
+}
+
+textarea {
+    width: 100%;
+    max-width: 800px;
+    height: 80px;
+    background: rgba(168, 147, 120, 1);
+    border-radius: 15px;
+    color: rgba(255, 249, 235, 1);
+    border: none;
+    font-size: 18px;
+    padding: 10px;
+    resize: none;
+}
+
+.post-btn {
+    position: relative;
+    top: 10px;
+    left: 450px;
+    border-radius: 10px;
+    border: none;
+    height: 45px;
+    width: 75px;
+    background-color: rgba(255, 249, 235, 1);
+    color: rgba(168, 147, 120, 1);
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.post-btn:hover {
+    border: 2px solid rgba(68, 49, 43, 1);
+    background-color: rgba(68, 49, 43, 1);
+    cursor: pointer;
+}
+
+.postDisplayBox{
+    margin-top: 10px;
+    background-color: rgba(168, 147, 120, 1);
+    border: solid rgba(128, 128, 128, 0.356) 1px;
+    border-radius: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: relative;
+    left: 30px;
+    width: 90%;
+    color: rgba(255, 249, 235, 1);
+}
+
+a {
+    color: rgba(255, 249, 235, 1);
+    font-size: 25px;
+}
+
+.postDisplayBoxHead li{
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    left: -30px;
+}
+.postDisplayBoxHead img{
+    height: 40px;
+    border-radius: 360px;
+}
+
+.delete-btn {
+    position: relative;
+    top: 10px;
+    left: 400px;
+    border-radius: 10px;
+    border: none;
+    height: 45px;
+    width: 75px;
+    background-color: rgba(255, 249, 235, 1);
+    color: rgba(168, 147, 120, 1);
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.delete-btn:hover {
+    color: rgba(68, 49, 43, 1);
+    cursor: pointer;
+}
+
+.feed-post-actions
+{
+    position: relative;
+    bottom: 10px;
+    left: 10px;
+}
+
+.like-btn {
+    position: relative;
+    border-radius: 10px;
+    border: none;
+    height: 45px;
+    width: 75px;
+    background-color: rgba(255, 249, 235, 1);
+    color: rgba(168, 147, 120, 1);
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.like-btn:hover {
+    color: rgba(68, 49, 43, 1);
+    cursor: pointer;
+}
+.comment-btn {
+    position: relative;
+    border-radius: 10px;
+    border: none;
+    height: 45px;
+    width: 75px;
+    background-color: rgba(255, 249, 235, 1);
+    color: rgba(168, 147, 120, 1);
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.comment-btn:hover {
+    color: rgba(68, 49, 43, 1);
+    cursor: pointer;
+}
+.repost-btn {
+    position: relative;
+    border-radius: 10px;
+    border: none;
+    height: 45px;
+    width: 75px;
+    background-color: rgba(255, 249, 235, 1);
+    color: rgba(168, 147, 120, 1);
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.repost-btn:hover {
+    color: rgba(68, 49, 43, 1);
+    cursor: pointer;
+}
+
+.postDisplayBoxMessage{
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-right: 20px;
+    padding-left: 20px;
+    font-size: 17px;
+    border-left: solid rgba(68, 49, 43, 1) 3px;
+    position: relative;
+    left: 10px;
+}
+
+
+.postDisplayBoxImage{
+    padding-right: 60%;
+    max-height: inherit;
+    position: relative;
+    left: 10px;
+}
+
+.infoText {
+    color: rgba(168, 147, 120, 1);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    position: relative;
+    font-size: 25px;
+    font-style: bold;
+    left: 50px;
+}
+
+.repost {
+    color:rgba(168, 147, 120, 1);
+}
+
+.repost-container {
+    margin-top: 10px;
+    background-color: rgba(168, 147, 120, 1);
+    border: solid rgba(128, 128, 128, 0.356) 1px;
+    border-radius: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: relative;
+    left: 30px;
+    width: 90%;
+    color: rgba(255, 249, 235, 1);
+}
+
+.repostDisplayBoxHead {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 8px;
+}
+
+
+
+.repostDisplayBoxHead ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    left: 40px;
+}
+
+.repostDisplayBoxHead li{
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    left: -30px;
+}
+
+.repostDisplayBoxHead img {
+    height: 40px;
+    border-radius: 50%;
+}
+
+.repostDisplayBoxHead .repost-username {
+    font-weight: bold;
+    color: rgba(68, 49, 43, 1);
+}
+
+.redelete-btn {
+    position: relative;
+    border-radius: 10px;
+    border: none;
+    height: 45px;
+    width: 75px;
+    background-color: rgba(255, 249, 235, 1);
+    color: rgba(168, 147, 120, 1);
+    font-size: 16px;
+    transition: 0.3s;
+    margin: 5px;
+}
+
+.redelete-btn:hover {
+    color: rgba(68, 49, 43, 1);
+    cursor: pointer;
+}
