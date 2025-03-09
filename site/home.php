@@ -37,10 +37,7 @@ if (!isset($_SESSION['user_id'])) {
                     $followedUsers[] = $row['followed_id'];
                 }
 
-
-                // Check if the user follows anyone
-                if (count($followedUsers) > 0) {
-                // Display posts from followed users only
+                if (count($followedUsers) > 0)
                     $followedUserIds = implode(",", $followedUsers);
                     $postsql = "SELECT id, content, media, uid, dop, repost FROM posts WHERE uid IN ($followedUserIds) ORDER BY dop DESC";
                     $postresult = mysqli_query($conn, $postsql);
@@ -74,23 +71,22 @@ if (!isset($_SESSION['user_id'])) {
                                 $originalUserResult = mysqli_query($conn, $originalUserSql);
                                 $originalUser = mysqli_fetch_assoc($originalUserResult);
                         
-                                echo '
-                                    <div class="repost-container">
-                                    <div class="repostDisplayBoxHead">
-                                        <ul>
-                                            <li>  
-                                                <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">
-                                                <img src="' . ($userrow['dp'] ? '../uploads/profile_pictures/' . $userrow['dp'] : 'https://api.dicebear.com/6.x/initials/png?seed=' . $userrow['username'] . '&size=128') . '" 
-                                                alt="profile" class="account-profpic">
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">' . $userrow['username'] . '</a>
-                                            </li>
-                                            <li>
-                                                <p> reposted <a href="account.php?username=' . $originalUser['username'] .'" style="text-decoration: none;">' . $originalUser['username'] . '</a>\'s post.</p>
-                                            </li>
-                                        </ul>
+                                echo '<div class="repost-container">
+                                        <div class="repostDisplayBoxHead">
+                                            <ul>
+                                                <li>  
+                                                    <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">
+                                                    <img src="' . ($userrow['dp'] ? '../uploads/profile_pictures/' . $userrow['dp'] : 'https://api.dicebear.com/6.x/initials/png?seed=' . $userrow['username'] . '&size=128') . '" 
+                                                    alt="profile" class="account-profpic">
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">' . $userrow['username'] . '</a>
+                                                </li>
+                                                <li>
+                                                    <p> reposted <a href="account.php?username=' . $originalUser['username'] .'" style="text-decoration: none;">' . $originalUser['username'] . '</a>\'s post.</p>
+                                                </li>
+                                            </ul>
                                         </div>';
                                 echo '<div class="postDisplayBoxHead">
                                         <ul>
@@ -124,7 +120,7 @@ if (!isset($_SESSION['user_id'])) {
                                         
                                 if ($user_id == $_SESSION['user_id']) {        
                                         echo '<button class="redelete-btn" onclick="deletePost('. $post_id . ')"><i class="fa-solid fa-trash"></i></button>
-                                        </div>';
+                                            </div>';
                                         echo '</div>';
                                 }
                             }
@@ -142,7 +138,7 @@ if (!isset($_SESSION['user_id'])) {
                                             <a href="account.php?username=' . $userrow['username'] . '" style="text-decoration: none;">' . $userrow['username'] . '</a>
                                         </li>
                                         <li style="vertical-align:baseline;">
-                                        <small>' . $postrow['dop'] . '</small>
+                                            <small>' . $postrow['dop'] . '</small>
                                         </li>
                                     ';
                             
@@ -175,35 +171,20 @@ if (!isset($_SESSION['user_id'])) {
                             </div>";
                         }
                     }
-                }  else {
-                    echo '<p class="infoText">No posts from followed users</p>';
-                }
                 } else {
-                    echo '<p class="infoText">You are not following anyone yet</p>';
+                    echo '<p class="infoText">No posts from followed users</p>';
                 }
             ?>
         </div>
             <div id="commentModal" class="modal">
                 <div class="modal-content">
-                <span class="close">&times;</span>
-                <textarea id="commentText" placeholder="Write a comment..."></textarea>
-                <button id="submitComment">Post Comment</button>
-                <h2>Comments</h2>
-                <div id="modal-comments"></div> <!-- Scrollable Comment Section mewthhed lolis-->
+                    <span class="close">&times;</span>
+                    <textarea id="commentText" placeholder="Write a comment..."></textarea>
+                    <button id="submitComment">Post Comment</button>
+                    <h2>Comments</h2>
+                <div id="modal-comments"></div>
             </div>
         </div>
-        <div id="editModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <form id="editPostForm">
-            <textarea id="editPostText" name="content" placeholder="Edit your post..."></textarea>
-            <input type="hidden" id="editPostId" name="post_id">
-            <div id="editPostImage"></div>
-            <button type="submit">Save Changes</button>
-        </form>
-    </div>
-</div>
-
         <script src="../handlers/handlerScript.js"></script>
     </body>
 </html>

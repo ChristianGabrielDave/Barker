@@ -11,7 +11,6 @@ if (!isset($data['post_id'])) {
 
 $post_id = intval($data['post_id']);
 
-// Get all comments for the given post
 $commentQuery = "SELECT c.comment, c.doc, u.username, u.dp 
                  FROM comments c
                  JOIN users u ON c.uid = u.id

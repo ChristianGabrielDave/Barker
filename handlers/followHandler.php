@@ -13,7 +13,6 @@ if (isset($_POST['followed_id']) && isset($_POST['action'])) {
     $action = $_POST['action'];
 
     if ($action == 'follow') {
-        // Add the follow relationship
         $stmt = $conn->prepare("INSERT INTO followers (follower_id, followed_id) VALUES (?, ?)");
         $stmt->bind_param("ii", $follower_id, $followed_id);
         $stmt->execute();
@@ -27,13 +26,11 @@ $notif_stmt->bind_param("iis", $followed_id, $follower_id, $message);
 $notif_stmt->execute();
 
     } elseif ($action == 'unfollow') {
-        // Remove the follow relationship
         $stmt = $conn->prepare("DELETE FROM followers WHERE follower_id = ? AND followed_id = ?");
         $stmt->bind_param("ii", $follower_id, $followed_id);
         $stmt->execute();
     }
 
-    // Use the username from the POST data for the redirect
     $username = isset($_POST['username']) ? $_POST['username'] : '';
     header("Location: ../site/account.php?username=" . $username);
     exit();

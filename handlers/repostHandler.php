@@ -11,7 +11,6 @@ $user_id = $_SESSION['user_id'];
 $post_id = intval($_POST['post_id']);
 $current_user = $_SESSION['user_id'];
 
-// Check if the post exists
 $postCheckSql = "SELECT uid FROM posts WHERE id = ?";
 $postCheckStmt = $conn->prepare($postCheckSql);
 $postCheckStmt->bind_param("i", $post_id);
@@ -26,7 +25,6 @@ if ($postCheckResult->num_rows == 0) {
 $postData = $postCheckResult->fetch_assoc();
 $originalPostOwner = $postData['uid'];
 
-// Insert repost
 $repostSql = "INSERT INTO posts (uid, content, media, dop, repost) VALUES (?, '', '', NOW(), ?)";
 $repostStmt = $conn->prepare($repostSql);
 $repostStmt->bind_param("ii", $user_id, $post_id);
@@ -34,9 +32,7 @@ $repostStmt->bind_param("ii", $user_id, $post_id);
 if ($repostStmt->execute()) {
     echo json_encode(['success' => true]);
 
-    // Prevent self-notification
     if ($originalPostOwner != $current_user) {
-        // Insert notification for the original post owner
         $notif_stmt = $conn->prepare("
             INSERT INTO notifications (user_id, type, from_user_id, post_id, message) 
             VALUES (?, 'repost', ?, ?, ?)

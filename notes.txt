@@ -7,7 +7,7 @@ Barker
     *Edit Post
     *Delete Post /
 
-    *Follow Each Other
+    *Follow Each Other /
     
     *Search for Post or User /
 

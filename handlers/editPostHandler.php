@@ -11,12 +11,10 @@ $post_id = $_POST['post_id'];
 $new_content = mysqli_real_escape_string($conn, $_POST['content']);
 $user_id = $_SESSION['user_id'];
 
-// Check if the post exists and belongs to the current user
 $postCheckQuery = "SELECT * FROM posts WHERE id = $post_id AND uid = $user_id";
 $postCheckResult = mysqli_query($conn, $postCheckQuery);
 
 if (mysqli_num_rows($postCheckResult) > 0) {
-    // Update the post content
     $updateQuery = "UPDATE posts SET content = '$new_content' WHERE id = $post_id";
     if (mysqli_query($conn, $updateQuery)) {
         echo json_encode(['success' => true, 'message' => 'Post updated successfully']);

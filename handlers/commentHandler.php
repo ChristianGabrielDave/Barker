@@ -27,7 +27,6 @@ $postResult = $postQuery->get_result();
 $postData = $postResult->fetch_assoc();
 $postOwner = $postData['uid'];
 if ($postOwner != $current_user) {
-    // Insert notification for the post owner
     $notif_stmt = $conn->prepare("
     INSERT INTO notifications (user_id, type, from_user_id, post_id, message) 
     VALUES (?, 'comment', ?, ?, ?)
